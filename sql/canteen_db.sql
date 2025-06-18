@@ -1,0 +1,35 @@
+CREATE DATABASE IF NOT EXISTS canteen_db;
+USE canteen_db;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100) UNIQUE,
+  password VARCHAR(255),
+  role ENUM('student', 'admin') NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS menu_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  price DECIMAL(10, 2),
+  category VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  items TEXT,
+  total DECIMAL(10, 2),
+  token VARCHAR(100),
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS payments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT,
+  amount DECIMAL(10,2),
+  status VARCHAR(50),
+  FOREIGN KEY (order_id) REFERENCES orders(id)
+);
